@@ -1,0 +1,37 @@
+<!-- File: watch.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Watch</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav>
+    <button id="themeToggle" class="theme-toggle">🌙 Toggle Theme</button>
+    <a href="index.html">🏠 Home</a>
+    <a href="calendar.html">📅 Calendar</a>
+    <a href="favourites.html">⭐ Favourites</a>
+    <a href="watchlist.html">📋 Watchlist</a>
+    <a href="movies.html">🎬 Movies</a>
+  </nav>
+
+  <div id="videoPlayer">
+    <h2>Now Playing: <span id="movieTitle">Loading...</span></h2>
+    <iframe id="iframe" scrolling="no" src="" allowfullscreen></iframe>
+    <p style="color: rgb(79, 221, 221); font-weight: 500;">If there's an error or buffering, refresh or try a different source.</p>
+  </div>
+
+  <div id="episodeList"></div>
+
+  <script src="js/theme.js"></script>
+  <script src="js/watch.js"></script>
+  <footer class="site-footer">
+  <p>© 2025 TV Tracker — Built with ❤️ for your watchlist.</p>
+  <p>
+    <a href="calendar.html">📅 Episode Calendar</a> |
+    <a href="index.html">🏠 Back to Home</a>
+  </p>
+</footer>
+</body>
+</html>

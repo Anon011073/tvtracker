@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TV Tracker - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="register.html">📝 Register</a>
+  </nav>
+  <header>
+    <h1>Login</h1>
+  </header>
+  <main>
+    <form id="loginForm" style="text-align: center; max-width: 400px; margin: auto;">
+      <input type="text" id="username" placeholder="Username" required style="display: block; width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
+      <input type="password" id="password" placeholder="Password" required style="display: block; width: 100%; padding: 10px; margin-bottom: 20px; box-sizing: border-box;">
+      <button type="submit" class="btn">Login</button>
+      <p id="message" style="margin-top: 15px;"></p>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const messageEl = document.getElementById('message');
+
+      fetch('api/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => response.json().then(data => ({ status: response.status, body: data })))
+      .then(res => {
+        messageEl.textContent = res.body.message;
+        if (res.status === 200) {
+          messageEl.style.color = 'green';
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
+        } else {
+          messageEl.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        messageEl.textContent = 'An unexpected error occurred.';
+        messageEl.style.color = 'red';
+      });
+    });
+  </script>
+</body>
+</html>

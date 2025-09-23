@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TV Tracker - Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body id="top">
+  <nav>
+    <!-- Navigation will be dynamically loaded here by js/auth.js -->
+  </nav>
+  <header>
+    <h1>📺 TV Episode Tracker</h1>
+    <input type="text" id="searchInput" placeholder="Search shows..." />
+  </header>
+  <main>
+   
+<section id="searchSection" style="display: none;">
+  <h2>🔍 Search Results</h2>
+  <div id="searchResults" class="show-grid"></div>
+</section>
+
+<section id="movieSection" style="display: none;">
+  <h2>🎬 Movie Results</h2>
+  <div id="movieResults" class="show-grid"></div>
+</section>
+
+<section>
+  <h2>🎯 Shows I Watch</h2>
+  <div id="trackedShows" class="show-grid"></div>
+</section>
+<section>
+
+<section>
+  <h2>🎯 Featured Genre</h2>
+  <label for="genreSelect">Choose a genre:</label>
+  <select id="genreSelect">
+    <option value="80">Crime</option>
+    <option value="9648">Mystery</option>
+    <option value="10765">Sci-Fi & Fantasy</option>
+    <option value="10759">Action & Adventure</option>
+    <option value="35">Comedy</option>
+    <option value="18">Drama</option>
+    <option value="16">Animation</option>
+    <option value="99">Documentary</option>
+  </select>
+  <div id="genreSection" class="show-grid genreselect"></div>
+</section>
+  <h2>📈 Trending Today</h2>
+  <div id="trending" class="show-grid"></div>
+</section>
+    <section>
+      <h2>🔥 Popular Shows</h2>
+      <div id="popular" class="show-grid"></div>
+    </section>
+    <section>
+      <h2>🏆 Top Rated Shows</h2>
+      <div id="topRated" class="show-grid"></div>
+    </section>
+<section>
+  <h2>🧩 Backup & Restore</h2>
+  <button onclick="exportData()">⬇️ Export Tracker Data</button>
+  <input type="file" id="importFile" accept=".json" />
+  <button onclick="importData()">⬆️ Import Tracker Data</button>
+</section>
+  </main>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+<footer class="site-footer">
+  <p>© 2025 TV Tracker — Built with ❤️ for your watchlist.</p>
+  <p>
+    <a href="calendar.html">📅 Episode Calendar</a> |
+    <a href="index.html">🏠 Back to Home</a>
+  </p>
+</footer>
+<a href="#top" class="back-to-top">Back to Top</a>
+</body>
+</html>

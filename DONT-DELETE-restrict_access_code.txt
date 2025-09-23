@@ -1,0 +1,13 @@
+🛠 Sample Auth Check Snippet
+In any page like dashboard.php, you can restrict access like:
+
+php
+Copy
+Edit
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+?>
