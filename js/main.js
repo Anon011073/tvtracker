@@ -6,11 +6,15 @@ function renderShows(shows, containerId) {
 
   shows.slice(0, 16).forEach(show => {
     const div = document.createElement('div');
-    div.className = 'card';
+    div.className = 'col';
     div.innerHTML = `
-      <img src="https://image.tmdb.org/t/p/w200${show.poster_path}" alt="${show.name}" />
-      <h3>${show.name}</h3>
-      <p>⭐ ${show.vote_average}</p>
+      <div class="card h-100">
+        <img src="https://image.tmdb.org/t/p/w200${show.poster_path}" class="card-img-top" alt="${show.name}" />
+        <div class="card-body">
+          <h5 class="card-title">${show.name}</h5>
+          <p class="card-text">⭐ ${show.vote_average}</p>
+        </div>
+      </div>
     `;
     div.addEventListener('click', () => {
       window.location.href = `show.html?id=${show.id}`;
@@ -41,11 +45,15 @@ function loadTrackedShows() {
       .then(res => res.json())
       .then(data => {
         const div = document.createElement('div');
-        div.className = 'card';
+        div.className = 'col';
         div.innerHTML = `
-          <img src="https://image.tmdb.org/t/p/w200${data.poster_path}" alt="${data.name}" />
-          <h3>${data.name}</h3>
-          <p>⭐ ${data.vote_average}</p>
+          <div class="card h-100">
+            <img src="https://image.tmdb.org/t/p/w200${data.poster_path}" class="card-img-top" alt="${data.name}" />
+            <div class="card-body">
+              <h5 class="card-title">${data.name}</h5>
+              <p class="card-text">⭐ ${data.vote_average}</p>
+            </div>
+          </div>
         `;
         div.addEventListener('click', () => {
           window.location.href = `show.html?id=${data.id}`;
@@ -115,11 +123,15 @@ function renderMovies(movies, containerId) {
 
   movies.slice(0, 12).forEach(movie => {
     const div = document.createElement('div');
-    div.className = 'card';
+    div.className = 'col';
     div.innerHTML = `
-      <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}" />
-      <h3>${movie.title}</h3>
-      <p>📅 ${movie.release_date || 'Unknown'}</p>
+      <div class="card h-100">
+        <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" class="card-img-top" alt="${movie.title}" />
+        <div class="card-body">
+          <h5 class="card-title">${movie.title}</h5>
+          <p class="card-text">📅 ${movie.release_date || 'Unknown'}</p>
+        </div>
+      </div>
     `;
     div.addEventListener('click', () => {
       window.location.href = `movie.html?id=${movie.id}`;

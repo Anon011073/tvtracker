@@ -1,0 +1,18 @@
+/* Custom styles */
+.back-to-top {
+  display: none; /* hidden by default */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.genreselect {
+  margin-top: 20px;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--bs-border-color);
+}
