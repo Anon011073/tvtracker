@@ -688,4 +688,53 @@ body.dark-mode .card {
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
   margin-top: 1rem;
 }
+/* Profile Page Specific Styles */
+.profile-page .show-card-full {
+    background-color: #1c1c1c;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
 
+.profile-page .poster {
+    width: 150px;
+    height: auto;
+    border-radius: 6px;
+}
+
+.profile-page .show-info {
+    flex: 1;
+}
+
+.profile-page .seasons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.profile-page .season {
+    background-color: #333;
+    color: #f0f0f0; /* Readable text color */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.profile-page .season:hover {
+    background-color: #4cc9f0;
+    color: #111;
+}
+
+.profile-page .episodes-container {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid #444;
+}
+
+.profile-page .episode-row label {
+    color: #ccc;
+}

@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="show-info">
                                 <h3>${show.name}</h3>
                                 <p>${show.overview.substring(0, 150)}...</p>
+                                <a href="watch.html?id=${show.id}" class="btn btn-primary" style="margin-top: 1rem;">▶️ Watch Now</a>
                                 <div class="seasons-container">${seasonsHTML}</div>
                                 <div class="episodes-container" id="episodes-for-show-${show.id}"></div>
                             </div>
