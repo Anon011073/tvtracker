@@ -1,6 +1,8 @@
 <?php
 session_start();
-include '../config.php';
+// Correctly include the database helper and establish a connection
+require_once __DIR__ . '/database.php';
+$conn = getDbConnection();
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
@@ -9,13 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['error' => "Connection failed: " . $conn->connect_error]);
-    exit;
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $show_id = $_GET['show_id'];

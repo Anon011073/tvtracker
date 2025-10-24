@@ -65,13 +65,11 @@ function checkForNotifications() {
   fetch('api/notifications.php')
     .then(res => res.json())
     .then(notifications => {
-      if (notifications.length > 0) {
-        let alertMessage = "Episode Alert!\n\n";
-        notifications.forEach(n => {
-          alertMessage += `${n.show_name} - ${n.episode_string}\n`;
-          alertMessage += `(${n.status} on ${n.air_date})\n\n`;
-        });
-        alert(alertMessage);
+      const icon = document.getElementById('notification-icon');
+      if (icon && notifications.length > 0) {
+        icon.innerHTML = '&#128276;'; // Bell emoji
+        icon.style.display = 'inline'; // Make it visible
+        icon.setAttribute('title', `You have ${notifications.length} new episode alerts!`);
       }
     })
     .catch(err => console.error('Error fetching notifications:', err));

@@ -1,69 +1,44 @@
 <?php
-require_once 'database.php';
-
 session_start();
-
-header('Content-Type: application/json');
+require_once __DIR__ . '/database.php';
+$conn = getDbConnection();
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
-    echo json_encode(['message' => 'You must be logged in to change your password.']);
+    echo json_encode(['error' => 'User not logged in']);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['message' => 'Method Not Allowed']);
-    exit;
-}
-
-$data = json_decode(file_get_contents('php://input'), true);
-
-if (!isset($data['currentPassword']) || !isset($data['newPassword'])) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Current and new passwords are required.']);
-    exit;
-}
-
-$currentPassword = $data['currentPassword'];
-$newPassword = $data['newPassword'];
 $user_id = $_SESSION['user_id'];
 
-if (empty($currentPassword) || empty($newPassword)) {
-    http_response_code(400);
-    echo json_encode(['message' => 'Please fill in all fields.']);
-    exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $current_password = $data['current_password'];
+    $new_password = $data['new_password'];
+
+    // Get current password hash from DB
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user && password_verify($current_password, $user['password'])) {
+        // Current password is correct, update to new password
+        $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
+        $stmt_update = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+        $stmt_update->bind_param("si", $new_password_hashed, $user_id);
+
+        if ($stmt_update->execute()) {
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to update password.']);
+        }
+    } else {
+        // Invalid current password
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid current password.']);
+    }
 }
-
-$conn = getDbConnection();
-
-$stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
-$stmt->close();
-
-if (!password_verify($currentPassword, $user['password'])) {
-    http_response_code(401);
-    echo json_encode(['message' => 'Incorrect current password.']);
-    $conn->close();
-    exit;
-}
-
-$hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
-
-$stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
-$stmt->bind_param("si", $hashed_password, $user_id);
-
-if ($stmt->execute()) {
-    http_response_code(200);
-    echo json_encode(['message' => 'Password changed successfully.']);
-} else {
-    http_response_code(500);
-    echo json_encode(['message' => 'An error occurred while changing the password.']);
-}
-
-$stmt->close();
-$conn->close();
 ?>

@@ -62,11 +62,20 @@ function renderShowDetails(show) {
 
   const favBtn = document.getElementById('favBtn');
   fetch('api/favorites.php')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to fetch favorites');
+      return res.json();
+    })
     .then(favorites => {
-      const isFav = favorites.some(f => f.show_id === show.id);
+      // Ensure we are comparing numbers to numbers
+      const isFav = favorites.some(f => f.show_id === parseInt(show.id, 10));
       favBtn.textContent = isFav ? '❌ Remove from Favourites' : '❤️ Add to Favourites';
       favBtn.addEventListener('click', () => toggleFavourite(show.id, show.name, !isFav));
+    })
+    .catch(error => {
+      console.error('Error loading favorite status:', error);
+      favBtn.textContent = '⚠️ Error';
+      favBtn.disabled = true;
     });
 
   document.getElementById('caughtUpBtn').addEventListener('click', () => markCaughtUp(show.id));

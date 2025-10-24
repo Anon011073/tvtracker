@@ -1,57 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>TV Tracker - Profile</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <title>My Profile - TV Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav>
-    <!-- Navigation will be dynamically loaded here by js/auth.js -->
-  </nav>
-  <header>
-    <h1>Change Password</h1>
-  </header>
-  <main>
-    <form id="changePasswordForm" style="text-align: center; max-width: 400px; margin: auto;">
-      <input type="password" id="currentPassword" placeholder="Current Password" required style="display: block; width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
-      <input type="password" id="newPassword" placeholder="New Password" required style="display: block; width: 100%; padding: 10px; margin-bottom: 20px; box-sizing: border-box;">
-      <button type="submit" class="btn">Change Password</button>
-      <p id="message" style="margin-top: 15px;"></p>
-    </form>
-  </main>
+    <nav>
+        <!-- Navigation will be dynamically loaded here by js/auth.js -->
+    </nav>
+    <main class="profile-page">
+        <header class="profile-header">
+            <h1>My Watchlist</h1>
+            <p>Here are the shows you're tracking. Click on a show to manage your watch progress.</p>
+            <a href="changepassword.html" class="btn btn-secondary">Change Password</a>
+        </header>
 
-  <script src="js/auth.js"></script>
-  <script>
-    document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const currentPassword = document.getElementById('currentPassword').value;
-      const newPassword = document.getElementById('newPassword').value;
-      const messageEl = document.getElementById('message');
-
-      fetch('api/change_password.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ currentPassword, newPassword })
-      })
-      .then(response => response.json().then(data => ({ status: response.status, body: data })))
-      .then(res => {
-        messageEl.textContent = res.body.message;
-        if (res.status === 200) {
-          messageEl.style.color = 'green';
-        } else {
-          messageEl.style.color = 'red';
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        messageEl.textContent = 'An unexpected error occurred.';
-        messageEl.style.color = 'red';
-      });
-    });
-  </script>
+        <section id="tracked-shows-container" class="show-grid">
+            <!-- Favorite shows will be loaded here by js/profile.js -->
+        </section>
+    </main>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

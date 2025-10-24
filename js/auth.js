@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="watchlist.html">📋 Watchlist</a>
                     <a href="profile.html">👤 Profile</a>
                     <span style="float: right;">
+                        <span id="notification-icon" style="display: none; margin-right: 15px;" title="You have new episode alerts!"></span>
                         <span style="color: white; margin-right: 15px;">Welcome, ${data.username}!</span>
                         <a href="#" id="logoutBtn">Logout</a>
                     </span>

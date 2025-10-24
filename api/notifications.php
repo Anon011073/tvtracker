@@ -1,6 +1,8 @@
 <?php
 session_start();
-include '../config.php'; // Use the main config for DB connection
+// Correctly include the database helper and establish a connection
+require_once __DIR__ . '/database.php';
+$conn = getDbConnection();
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
