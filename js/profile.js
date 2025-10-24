@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('tracked-shows-container');
+    const notificationsContainer = document.getElementById('notifications-container');
+    const showsContainer = document.getElementById('tracked-shows-container');
+
+    // Fetch and display upcoming episode notifications
+    fetch('api/notifications.php')
+        .then(response => response.json())
+        .then(notifications => {
+            if (notifications.length === 0) {
+                notificationsContainer.innerHTML += '<p>No upcoming episodes for your favorite shows in the next 24 hours.</p>';
+                return;
+            }
+            let notificationsHTML = '';
+            notifications.forEach(n => {
+                notificationsHTML += `
+                    <div class="notification-item">
+                        <strong>${n.show_name}</strong> - ${n.episode_string}
+                        <em>(${n.status} on ${n.air_date})</em>
+                    </div>
+                `;
+            });
+            notificationsContainer.innerHTML += notificationsHTML;
+        });
 
     // Fetch the user's favorite shows
     fetch('api/favorites.php')

@@ -61,22 +61,7 @@ function loadGenreShows(genreId) {
   loadShows(`/discover/tv&with_genres=${genreId}`, 'genreSection');
 }
 
-function checkForNotifications() {
-  fetch('api/notifications.php')
-    .then(res => res.json())
-    .then(notifications => {
-      const icon = document.getElementById('notification-icon');
-      if (icon && notifications.length > 0) {
-        icon.innerHTML = '&#128276;'; // Bell emoji
-        icon.style.display = 'inline'; // Make it visible
-        icon.setAttribute('title', `You have ${notifications.length} new episode alerts!`);
-      }
-    })
-    .catch(err => console.error('Error fetching notifications:', err));
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  checkForNotifications(); // Check for notifications on page load
   loadTrackedShows?.();
   loadShows('/tv/popular', 'popular', 16);
   loadShows('/tv/top_rated', 'topRated', 16);

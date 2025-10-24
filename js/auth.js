@@ -8,17 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
             let navLinks = `
                 <a href="index.html">🏠 Home</a>
                 <a href="calendar.html">📅 Calendar</a>
-                <a href="newest_episodes.html">🔥 Newest Episodes</a>
+                <a href="upcoming_episodes.html">🔥 Upcoming Episodes</a>
                 <a href="movies.html">🎬 Movies</a>
             `;
 
             if (data.loggedIn) {
                 navLinks += `
-                    <a href="favourites.html">⭐ Favourites</a>
                     <a href="watchlist.html">📋 Watchlist</a>
                     <a href="profile.html">👤 Profile</a>
                     <span style="float: right;">
-                        <span id="notification-icon" style="display: none; margin-right: 15px;" title="You have new episode alerts!"></span>
                         <span style="color: white; margin-right: 15px;">Welcome, ${data.username}!</span>
                         <a href="#" id="logoutBtn">Logout</a>
                     </span>

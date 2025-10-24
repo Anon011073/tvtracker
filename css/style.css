@@ -689,6 +689,12 @@ body.dark-mode .card {
   margin-top: 1rem;
 }
 /* Profile Page Specific Styles */
+#tracked-shows-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 .profile-page .show-card-full {
     background-color: #1c1c1c;
     border-radius: 8px;

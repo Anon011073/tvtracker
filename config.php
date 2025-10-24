@@ -7,6 +7,8 @@ define('DB_PASSWORD', '');
 define('DB_NAME', 'tv_tracker');
 
 // TMDB API Key
-define('TMDB_API_KEY', 'b6b677eb7d4ec17f700e3d4dfc31d005');
+// IMPORTANT: It is recommended to set the TMDB_API_KEY as an environment variable for security.
+// Example: putenv('TMDB_API_KEY=your_api_key_here');
+define('TMDB_API_KEY', getenv('TMDB_API_KEY'));
 
 ?>
