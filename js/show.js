@@ -30,8 +30,7 @@ function fetchShowDetails(id) {
       loadCast(id);
       loadReviews(id);
       loadRecommendations(id);
-    })
-    .catch(error => console.error('Error fetching show details:', error));
+    });
 }
 
 function renderShowDetails(show) {
@@ -52,7 +51,6 @@ function renderShowDetails(show) {
           <button id="resetBtn" class="btn btn-danger">🗑️ Reset Progress</button>
           <a class="btn btn-primary" href="watch.html?id=${show.id}" target="_blank">▶️ Watch Now</a>
         </div>
-        <p><em>Last watched air date: ${caughtUpDate}</em></p>
       </div>
     </section>
 

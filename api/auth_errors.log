@@ -1,0 +1,56 @@
+[24-Oct-2025 03:07:29 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:07:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/register.php(42): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:07:30 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:07:30 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/login.php(37): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:09:03 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:09:03 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/register.php(42): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:09:04 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:09:04 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/login.php(37): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:10:06 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:10:06 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/register.php(42): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:10:07 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:10:07 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/login.php(37): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:11:21 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:11:21 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/register.php(44): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6
+[24-Oct-2025 03:11:22 UTC] PHP Warning:  mysqli::__construct(): php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php on line 6
+[24-Oct-2025 03:11:22 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: php_network_getaddresses: getaddrinfo for YOUR_DATABASE_HOST failed: Name or service not known in /app/api/database.php:6
+Stack trace:
+#0 /app/api/database.php(6): mysqli->__construct()
+#1 /app/api/login.php(37): getDbConnection()
+#2 {main}
+  thrown in /app/api/database.php on line 6

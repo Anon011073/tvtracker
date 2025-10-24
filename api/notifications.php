@@ -1,5 +1,4 @@
 <?php
-
 require_once 'database.php';
 require_once 'tmdb.php';
 
@@ -45,5 +44,4 @@ foreach ($favorites as $fav) {
 echo json_encode($notifications);
 
 $conn->close();
-
 ?>

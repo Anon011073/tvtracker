@@ -1,5 +1,4 @@
 <?php
-
 require_once 'database.php';
 
 session_start();
@@ -76,5 +75,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 $conn->close();
-
 ?>
