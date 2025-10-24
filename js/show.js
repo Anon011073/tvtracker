@@ -156,19 +156,24 @@ function renderEpisodes(showId, seasonNumber, episodes) {
     });
 }
 
-function toggleFavourite(id, name, addToFavorites) {
-  const url = addToFavorites ? 'api/favorites.php' : `api/favorites.php?show_id=${id}`;
-  const method = addToFavorites ? 'POST' : 'DELETE';
-  const body = addToFavorites ? JSON.stringify({ show_id: id, show_name: name }) : null;
+function toggleFavourite(id, name, isAdding) {
+  const action = isAdding ? 'add' : 'remove';
 
-  fetch(url, {
-    method: method,
+  fetch('api/favorites.php', {
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: body
+    body: JSON.stringify({
+      show_id: id,
+      action: action
+    })
   })
   .then(res => res.json())
   .then(data => {
-    alert(data.message);
+    if (data.success) {
+      alert(`Show ${action === 'add' ? 'added to' : 'removed from'} favorites!`);
+    } else {
+      alert(data.error || 'An error occurred.');
+    }
     location.reload();
   })
   .catch(error => {
@@ -215,12 +220,23 @@ function markCaughtUp(showId) {
 }
 
 function resetProgress(showId) {
-  fetch(`api/progress.php?show_id=${showId}`, { method: 'DELETE' })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      location.reload();
-    });
+  fetch('api/progress.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      show_id: showId,
+      action: 'reset'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Progress for this show has been reset!');
+    } else {
+      alert(data.error || 'An error occurred.');
+    }
+    location.reload();
+  });
 }
 
 function markEpisode(showId, seasonNumber, episodeNumber, watched) {

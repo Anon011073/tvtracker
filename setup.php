@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `user_favorites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `show_id` int(11) NOT NULL,
-  `show_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_show` (`user_id`,`show_id`),
   KEY `user_id` (`user_id`),

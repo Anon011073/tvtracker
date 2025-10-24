@@ -61,7 +61,24 @@ function loadGenreShows(genreId) {
   loadShows(`/discover/tv&with_genres=${genreId}`, 'genreSection');
 }
 
+function checkForNotifications() {
+  fetch('api/notifications.php')
+    .then(res => res.json())
+    .then(notifications => {
+      if (notifications.length > 0) {
+        let alertMessage = "Episode Alert!\n\n";
+        notifications.forEach(n => {
+          alertMessage += `${n.show_name} - ${n.episode_string}\n`;
+          alertMessage += `(${n.status} on ${n.air_date})\n\n`;
+        });
+        alert(alertMessage);
+      }
+    })
+    .catch(err => console.error('Error fetching notifications:', err));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  checkForNotifications(); // Check for notifications on page load
   loadTrackedShows?.();
   loadShows('/tv/popular', 'popular', 16);
   loadShows('/tv/top_rated', 'topRated', 16);
