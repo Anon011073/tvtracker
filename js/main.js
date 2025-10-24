@@ -29,30 +29,32 @@ function loadShows(endpoint, containerId, limit = 16) {
     .catch(err => console.error('Error loading shows:', err));
 }
 
-// Load tracked shows from localStorage
 function loadTrackedShows() {
-  const tracked = JSON.parse(localStorage.getItem('favs') || '[]');
-  const container = document.getElementById('trackedShows');
-  if (!container || !tracked.length) return;
-  container.innerHTML = '';
+  fetch('api/favorites.php')
+    .then(res => res.json())
+    .then(favorites => {
+      const container = document.getElementById('trackedShows');
+      if (!container || !favorites.length) return;
+      container.innerHTML = '';
 
-  tracked.slice(0, 16).forEach(show => {
-    fetch(`api/tmdb.php?endpoint=/tv/${show.id}`)
-      .then(res => res.json())
-      .then(data => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-          <img src="https://image.tmdb.org/t/p/w200${data.poster_path}" alt="${data.name}" />
-          <h3>${data.name}</h3>
-          <p>⭐ ${data.vote_average}</p>
-        `;
-        div.addEventListener('click', () => {
-          window.location.href = `show.html?id=${data.id}`;
-        });
-        container.appendChild(div);
+      favorites.slice(0, 16).forEach(show => {
+        fetch(`api/tmdb.php?endpoint=/tv/${show.show_id}`)
+          .then(res => res.json())
+          .then(data => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `
+              <img src="https://image.tmdb.org/t/p/w200${data.poster_path}" alt="${data.name}" />
+              <h3>${data.name}</h3>
+              <p>⭐ ${data.vote_average}</p>
+            `;
+            div.addEventListener('click', () => {
+              window.location.href = `show.html?id=${data.id}`;
+            });
+            container.appendChild(div);
+          });
       });
-  });
+    });
 }
 
 function loadGenreShows(genreId) {
@@ -67,13 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const genreSelect = document.getElementById('genreSelect');
   if (genreSelect) {
-    const savedGenre = localStorage.getItem('selectedGenre') || '80';
-    genreSelect.value = savedGenre;
-    loadGenreShows(savedGenre);
+    loadGenreShows(genreSelect.value);
 
     genreSelect.addEventListener('change', () => {
       const genreId = genreSelect.value;
-      localStorage.setItem('selectedGenre', genreId);
       loadGenreShows(genreId);
     });
   }

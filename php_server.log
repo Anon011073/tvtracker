@@ -1,2 +1,0 @@
-[Fri Oct 24 03:39:54 2025] PHP Warning:  PHP Startup: Unable to load dynamic library 'curl' (tried: /usr/lib/php/20230831/curl (/usr/lib/php/20230831/curl: cannot open shared object file: No such file or directory), /usr/lib/php/20230831/curl.so (/usr/lib/php/20230831/curl.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
-[Fri Oct 24 03:39:54 2025] Failed to listen on localhost:8000 (reason: Address already in use)
