@@ -11,33 +11,11 @@
   <!-- Navigation will be dynamically loaded here by js/auth.js -->
 </nav>
   <h1>❤️ Your Favourites</h1>
-  <div id="favouritesList"></div>
+  <div id="favoritesContainer"></div>
 
-  <script>
-    const favs = JSON.parse(localStorage.getItem('favs') || '[]');
-    const container = document.getElementById('favouritesList');
-
-    if (favs.length === 0) {
-      container.innerHTML = '<p>No favourites yet!</p>';
-    } else {
-      favs.forEach(fav => {
-        const div = document.createElement('div');
-        div.innerHTML = `<h3>${fav.name}</h3>
-          <button onclick="removeFav(${fav.id})">Remove</button>
-          <button onclick="location.href='show.html?id=${fav.id}'">Details</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function removeFav(id) {
-      let updated = favs.filter(f => f.id !== id);
-      localStorage.setItem('favs', JSON.stringify(updated));
-      location.reload();
-    }
-  </script>
-<script src="js/auth.js"></script>
- <script src="js/theme.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/theme.js"></script>
 <footer class="site-footer">
   <p>© 2025 TV Tracker — Built with ❤️ for your watchlist.</p>
   <p>

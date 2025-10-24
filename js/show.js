@@ -30,12 +30,12 @@ function fetchShowDetails(id) {
       loadCast(id);
       loadReviews(id);
       loadRecommendations(id);
-    });
+    })
+    .catch(error => console.error('Error fetching show details:', error));
 }
 
 function renderShowDetails(show) {
   const container = document.getElementById('showDetails');
-  const caughtUpDate = getCaughtUp(show.id) || 'Not set';
 
   container.innerHTML = `
     <section class="hero">
@@ -63,9 +63,14 @@ function renderShowDetails(show) {
   `;
 
   const favBtn = document.getElementById('favBtn');
-  const isFav = (JSON.parse(localStorage.getItem('favs') || '[]')).some(f => f.id === show.id);
-  favBtn.textContent = isFav ? '❌ Remove from Favourites' : '❤️ Add to Favourites';
-  favBtn.addEventListener('click', () => toggleFavourite(show.id, show.name));
+  fetch('api/favorites.php')
+    .then(res => res.json())
+    .then(favorites => {
+      const isFav = favorites.some(f => f.show_id === show.id);
+      favBtn.textContent = isFav ? '❌ Remove from Favourites' : '❤️ Add to Favourites';
+      favBtn.addEventListener('click', () => toggleFavourite(show.id, show.name, !isFav));
+    });
+
   document.getElementById('caughtUpBtn').addEventListener('click', () => markCaughtUp(show.id));
   document.getElementById('resetBtn').addEventListener('click', () => resetProgress(show.id));
 
@@ -126,112 +131,111 @@ function loadRecommendations(id) {
 
 function renderEpisodes(showId, seasonNumber, episodes) {
   const container = document.getElementById('episodes');
-  const progress = getWatchProgress(showId);
   const seasonId = `season-${showId}-${seasonNumber}`;
 
-  let html = `
-    <div class="season-block">
-      <h3 onclick="toggleSeason('${seasonId}')">📂 Season ${seasonNumber} (click to expand)</h3>
-      <div id="${seasonId}" class="season-body" style="display:none;">
-  `;
+  fetch(`api/progress.php?show_id=${showId}`)
+    .then(res => res.json())
+    .then(progress => {
+      let html = `
+        <div class="season-block">
+          <h3 onclick="toggleSeason('${seasonId}')">📂 Season ${seasonNumber} (click to expand)</h3>
+          <div id="${seasonId}" class="season-body" style="display:none;">
+      `;
 
-  episodes.forEach((ep, idx) => {
-    const watched = progress[seasonNumber]?.[idx] ?? false;
-    html += `
-      <div class="episode-row">
-        <input type="checkbox" id="ep-${seasonNumber}-${idx}" ${watched ? 'checked' : ''}
-          onchange="markEpisode(${showId}, ${seasonNumber}, ${idx}, this.checked)">
-        <label for="ep-${seasonNumber}-${idx}">S${seasonNumber}E${ep.episode_number}: ${ep.name}</label>
-      </div>
-    `;
-  });
+      episodes.forEach(ep => {
+        const watched = progress.some(p => p.season_number === seasonNumber && p.episode_number === ep.episode_number);
+        html += `
+          <div class="episode-row">
+            <input type="checkbox" id="ep-${seasonNumber}-${ep.episode_number}" ${watched ? 'checked' : ''}
+              onchange="markEpisode(${showId}, ${seasonNumber}, ${ep.episode_number}, this.checked)">
+            <label for="ep-${seasonNumber}-${ep.episode_number}">S${seasonNumber}E${ep.episode_number}: ${ep.name}</label>
+          </div>
+        `;
+      });
 
-  html += `</div></div>`;
-  container.innerHTML += html;
+      html += `</div></div>`;
+      container.innerHTML += html;
+    });
 }
 
-function toggleFavourite(id, name) {
-  let favs = JSON.parse(localStorage.getItem('favs') || '[]');
-  const isFav = favs.some(s => s.id === id);
-  const btn = document.getElementById('favBtn');
+function toggleFavourite(id, name, addToFavorites) {
+  const url = addToFavorites ? 'api/favorites.php' : `api/favorites.php?show_id=${id}`;
+  const method = addToFavorites ? 'POST' : 'DELETE';
+  const body = addToFavorites ? JSON.stringify({ show_id: id, show_name: name }) : null;
 
-  if (isFav) {
-    favs = favs.filter(s => s.id !== id);
-    alert(`Removed ${name} from favourites`);
-    if (btn) btn.textContent = '❤️ Add to Favourites';
-  } else {
-    favs.push({ id, name });
-    alert(`Added ${name} to favourites`);
-    if (btn) btn.textContent = '❌ Remove from Favourites';
-  }
-
-  localStorage.setItem('favs', JSON.stringify(favs));
+  fetch(url, {
+    method: method,
+    headers: { 'Content-Type': 'application/json' },
+    body: body
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+    location.reload();
+  })
+  .catch(error => {
+    console.error('Error toggling favorite:', error);
+    alert('An error occurred.');
+  });
 }
 
 function markCaughtUp(showId) {
   fetch(`api/tmdb.php?endpoint=/tv/${showId}`)
     .then(res => res.json())
     .then(show => {
-      const latestDate = show.last_episode_to_air?.air_date;
-      if (!latestDate) return alert('Could not determine last air date.');
-
-      const totalSeasons = show.number_of_seasons;
       const promises = [];
-
-      for (let s = 1; s <= totalSeasons; s++) {
+      for (let s = 1; s <= show.number_of_seasons; s++) {
         promises.push(fetch(`api/tmdb.php?endpoint=/tv/${showId}/season/${s}`).then(r => r.json()));
       }
-
       Promise.all(promises).then(seasons => {
-        const all = JSON.parse(localStorage.getItem('watchProgress') || '{}');
-        all[showId] = all[showId] || {};
-
+        const episodes = [];
         seasons.forEach(season => {
-          const seasonNum = season.season_number;
-          all[showId][seasonNum] = season.episodes.map(() => true);
+          season.episodes.forEach(ep => {
+            episodes.push({
+              season_number: season.season_number,
+              episode_number: ep.episode_number
+            });
+          });
         });
 
-        localStorage.setItem('watchProgress', JSON.stringify(all));
-
-        const caughtUp = JSON.parse(localStorage.getItem('caughtUp') || '{}');
-        caughtUp[showId] = latestDate;
-        localStorage.setItem('caughtUp', JSON.stringify(caughtUp));
-
-        alert(`Marked all episodes watched and caught up to ${latestDate}`);
-        location.reload();
+        fetch('api/progress.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bulk_update: true,
+            show_id: showId,
+            episodes: episodes
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          location.reload();
+        });
       });
     });
 }
 
 function resetProgress(showId) {
-  const all = JSON.parse(localStorage.getItem('watchProgress') || '{}');
-  delete all[showId];
-  localStorage.setItem('watchProgress', JSON.stringify(all));
-
-  const caughtUp = JSON.parse(localStorage.getItem('caughtUp') || '{}');
-  delete caughtUp[showId];
-  localStorage.setItem('caughtUp', JSON.stringify(caughtUp));
-
-  alert('Watch progress has been reset for this show.');
-  location.reload();
+  fetch(`api/progress.php?show_id=${showId}`, { method: 'DELETE' })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      location.reload();
+    });
 }
 
-function getCaughtUp(showId) {
-  const all = JSON.parse(localStorage.getItem('caughtUp') || '{}');
-  return all[showId];
-}
-
-function getWatchProgress(showId) {
-  const all = JSON.parse(localStorage.getItem('watchProgress') || '{}');
-  return all[showId] || {};
-}
-
-function markEpisode(showId, season, index, checked) {
-  const all = JSON.parse(localStorage.getItem('watchProgress') || '{}');
-  all[showId] = all[showId] || {};
-  all[showId][season] = all[showId][season] || [];
-  all[showId][season][index] = checked;
-  localStorage.setItem('watchProgress', JSON.stringify(all));
+function markEpisode(showId, seasonNumber, episodeNumber, watched) {
+  fetch('api/progress.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      show_id: showId,
+      season_number: seasonNumber,
+      episode_number: episodeNumber,
+      watched: watched ? 1 : 0
+    })
+  });
 }
 
 function toggleSeason(id) {
