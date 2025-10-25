@@ -121,6 +121,17 @@ nav a {
 nav a:hover {
   text-decoration: underline;
 }
+
+.notification-badge {
+    background-color: #e63946; /* A vibrant red */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px; /* Makes it circular */
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 5px;
+    vertical-align: super; /* Aligns it nicely with the text */
+}
 #watchList div {
   background-color: #1a1a1a;
   border: 1px solid #333;

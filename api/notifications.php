@@ -56,6 +56,9 @@ foreach ($favorite_show_ids as $show_id) {
         if ($air_date_timestamp >= $yesterday && $air_date_timestamp <= $tomorrow) {
             $status = $air_date_timestamp < $now ? "Aired recently" : "Airing soon";
             $notifications[] = [
+                'show_id' => $show_id, // Add show_id
+                'season_number' => $episode['season_number'], // Add season_number
+                'episode_number' => $episode['episode_number'], // Add episode_number
                 'show_name' => $show_name,
                 'episode_string' => "S{$episode['season_number']}E{$episode['episode_number']}: {$episode['name']}",
                 'air_date' => $episode['air_date'],

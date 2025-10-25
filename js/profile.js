@@ -10,24 +10,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 notificationsContainer.innerHTML += '<p>No upcoming episodes for your favorite shows in the next 24 hours.</p>';
                 return;
             }
-            let notificationsHTML = '';
+            let notificationsHTML = '<ul>';
             notifications.forEach(n => {
                 notificationsHTML += `
-                    <div class="notification-item">
+                    <li class="notification-item"
+                        data-show-id="${n.show_id}"
+                        data-season-number="${n.season_number}"
+                        data-episode-number="${n.episode_number}"
+                        style="cursor: pointer; text-decoration: underline;">
                         <strong>${n.show_name}</strong> - ${n.episode_string}
                         <em>(${n.status} on ${n.air_date})</em>
-                    </div>
+                    </li>
                 `;
             });
+            notificationsHTML += '</ul>';
             notificationsContainer.innerHTML += notificationsHTML;
         });
+
+    // Add event listener to the notifications container to handle clicks on items
+    notificationsContainer.addEventListener('click', function(e) {
+        if (e.target && e.target.matches('.notification-item, .notification-item *')) {
+            const item = e.target.closest('.notification-item');
+            const { showId, seasonNumber, episodeNumber } = item.dataset;
+
+            // Mark the episode as watched
+            markEpisode(showId, seasonNumber, episodeNumber, true);
+
+            // Give visual feedback
+            item.style.textDecoration = 'none';
+            item.style.cursor = 'default';
+            item.innerHTML += ' <strong>(Marked as Watched)</strong>';
+        }
+    });
 
     // Fetch the user's favorite shows
     fetch('api/favorites.php')
         .then(response => response.json())
         .then(favorites => {
             if (favorites.length === 0) {
-                container.innerHTML = '<p>You haven\'t added any shows to your watchlist yet. Find a show and add it to your favorites to start tracking!</p>';
+                showsContainer.innerHTML = '<p>You haven\'t added any shows to your watchlist yet. Find a show and add it to your favorites to start tracking!</p>';
                 return;
             }
 
@@ -54,13 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="episodes-container" id="episodes-for-show-${show.id}"></div>
                             </div>
                         `;
-                        container.appendChild(showElement);
+                        showsContainer.appendChild(showElement);
                     });
             });
         });
 
     // Event delegation to handle clicks on season elements
-    container.addEventListener('click', function(e) {
+    showsContainer.addEventListener('click', function(e) {
         if (e.target && e.target.classList.contains('season')) {
             const seasonNumber = e.target.dataset.seasonNumber;
             const showId = e.target.dataset.showId;
